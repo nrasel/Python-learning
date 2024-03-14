@@ -1,1 +1,1 @@
-b1=Bat()
+showDetails
