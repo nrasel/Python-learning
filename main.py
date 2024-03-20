@@ -1,21 +1,20 @@
-class Employee:
-    companyName="Apple"
-    noOfEmployees=0
-    def __init__(self,name) -> None:
-        self.name=name
-        self.raise_amount=0.02
-    def show(self):
-        print(f"The name of the Employee is {self.name} and the raise amount in {self.noOfEmployees} sized {self.companyName} is {self.raise_amount}")
+class Shape:
+    def __init__(self,x,y) -> None:
+        self.x=x
+        self.y=y 
 
-emp1=Employee("Harry")
+    def area(self):
+        return self.x*self.y
+    
+class Circle(Shape):
+    def __init__(self,radius) -> None:
+        self.radius=radius
+        super().__init__(radius,radius)
+    def area(self):
+        return 3.14*super().area()
+    
+rec=Shape(3,5)
+print(rec.area())
 
-emp1.raise_amount=30
-emp1.companyName="Apple India"
-emp1.show()
-
-Employee.companyName="Google"
-print(Employee.companyName)
-
-emp2=Employee("Rohan")
-emp2.companyName="Nestle"
-emp2.show()
+c=Circle(5)
+print(c.area())
