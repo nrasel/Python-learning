@@ -1,1 +1,1 @@
-showDetails
+x
