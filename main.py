@@ -1,31 +1,32 @@
-import argparse
-import requests
+import os
+import shutil
+import time
 
-def download_file(url, local_filename): 
-  if local_filename is None:
-    local_filename = url.split('/')[-1]
-    # NOTE the stream=True parameter below
-  with requests.get(url, stream=True) as r:
-      r.raise_for_status()
-      with open(local_filename, 'wb') as f:
-          for chunk in r.iter_content(chunk_size=8192): 
-              # If you have chunk encoded response uncomment if
-              # and set chunk_size parameter to None.
-              #if chunk: 
-              f.write(chunk)
-  return local_filename
-  
-parser = argparse.ArgumentParser()
+def copy_ppt_from_pendrive(src_pendrive_path, dest_folder):
+    # Check if the source pendrive path exists
+    if os.path.exists(src_pendrive_path):
+        # List all files in the pendrive
+        pendrive_files = os.listdir(src_pendrive_path)
+        # Look for .ppt files
+        ppt_files = [file for file in pendrive_files if file.endswith('.ppt')]
+        # Copy .ppt files to destination folder
+        for ppt_file in ppt_files:
+            src_file = os.path.join(src_pendrive_path, ppt_file)
+            dest_file = os.path.join(dest_folder, ppt_file)
+            shutil.copy(src_file, dest_file)
+            print(f"File '{ppt_file}' copied to '{dest_folder}'")
 
-# Add command line arguments
-parser.add_argument("url", help="Url of the file to download")
-# parser.add_argument("output", help="by which name do you want to save your file")
-parser.add_argument("-o", "--output", type=str, help="Name of the file", default=None)
-
-# Parse the arguments
-args = parser.parse_args()
-
-# Use the arguments in your code
-print(args.url)
-print(args.output, type(args.output))
-download_file(args.url, args.output)
+# Example usage
+src_pendrive_path = "H:\\"
+dest_folder = "D:\\"  # Change this to your desired destination folder
+    
+while True:
+    # Check for pendrive insertion
+    drives = [drive for drive in os.listdir('H:\\') if os.path.isdir(os.path.join('H:\\', drive))]
+    if len(drives) > 0:
+        print("Pendrive detected.")
+        copy_ppt_from_pendrive(src_pendrive_path, dest_folder)
+        break
+    else:
+        print("Waiting for pendrive insertion...")
+        time.sleep(5)  # Check every 5 seconds
